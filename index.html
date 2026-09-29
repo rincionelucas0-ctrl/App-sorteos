@@ -118,11 +118,11 @@
     }
     .hero-body { padding: 22px; }
     .home-feature-image {
-      width: 100%; height: 220px; border-radius: 20px; overflow: hidden; position: relative;
+      width: 100%; aspect-ratio: 16 / 9; min-height: 190px; border-radius: 20px; overflow: hidden; position: relative;
       background: linear-gradient(135deg,#edeaff,#f8f9ff); border: 1px solid var(--line); margin: 0 0 18px;
       display: grid; place-items: center;
     }
-    .home-feature-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: none; }
+    .home-feature-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: none; cursor: zoom-in; }
     .home-feature-fallback { color: var(--primary); font-size: 34px; font-weight: 900; letter-spacing: -.04em; }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 7px;
@@ -163,6 +163,11 @@
     .raffle-cover::after { width: 180px; height: 180px; right: -80px; top: -85px; }
     .raffle-cover img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; position: relative; z-index: 1; }
     .raffle-cover span { position: absolute; z-index: 2; }
+    .raffle-cover img { cursor: zoom-in; }
+    .image-lightbox { position:fixed; inset:0; z-index:1000; background:rgba(10,12,22,.86); display:none; align-items:center; justify-content:center; padding:20px; }
+    .image-lightbox.show { display:flex; }
+    .image-lightbox img { max-width:96vw; max-height:90vh; object-fit:contain; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.35); }
+    .image-lightbox button { position:absolute; top:14px; right:14px; width:44px; height:44px; border:0; border-radius:50%; background:#fff; color:#222; font-size:28px; cursor:pointer; }
     .raffle-body { padding: 18px; }
     .raffle-topline { display:flex; justify-content:space-between; align-items:center; gap: 10px; }
     .badge { display:inline-flex; align-items:center; min-height: 26px; padding: 5px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
@@ -258,12 +263,28 @@
     .ref-link { display:flex; gap:7px; }
     .ref-link input { min-width:0; flex:1; height:44px; border:1px solid var(--line); border-radius:13px; padding:0 11px; background:#fafbfc; color:var(--text); }
 
-    .detail-hero { margin-bottom:14px; }
-    .detail-cover { height:220px; border-radius:20px; background:linear-gradient(135deg,#edeaff,#fbfbff); border:1px solid var(--line); display:grid; place-items:center; color:var(--primary); font-size:38px; font-weight:900; margin-bottom:14px; overflow:hidden; position:relative; }
-    .detail-cover img { width:100%; height:100%; object-fit:cover; object-position:center; display:none; }
-    .detail-cover-fallback { text-align:center; }
+    .detail-hero { margin-bottom:18px; }
+    .detail-cover { width:100%; aspect-ratio:16 / 8.5; min-height:150px; max-height:230px; border-radius:22px; background:linear-gradient(135deg,#edeaff,#fbfbff); border:1px solid var(--line); display:grid; place-items:center; color:var(--primary); font-size:32px; font-weight:900; margin-bottom:12px; overflow:hidden; position:relative; box-shadow:var(--shadow-soft); }
+    .detail-cover img { width:100%; height:100%; object-fit:cover; object-position:center; display:none; cursor:zoom-in; }
+    .detail-cover-fallback { text-align:center; padding:18px; }
     .detail-cover-fallback small { display:block; text-align:center; font-size:11px; color:var(--muted); font-weight:700; margin-top:5px; }
     .detail-card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:16px; margin-bottom:12px; }
+    .detail-info-card { padding:15px; }
+    .detail-title-row { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:12px; }
+    .detail-title-copy { min-width:0; }
+    .detail-title-copy h1 { margin:7px 0 5px; font-size:clamp(23px,6.5vw,31px); line-height:1.08; }
+    .detail-prize { width:min(42vw,150px); padding:10px 11px; border-radius:14px; background:var(--primary-soft); color:var(--primary); text-align:left; }
+    .detail-prize .k { display:block; font-size:9px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; }
+    .detail-prize .v { display:block; font-size:13px; font-weight:900; line-height:1.2; overflow-wrap:anywhere; }
+    .detail-description { margin:10px 0 0; font-size:13px; line-height:1.5; }
+    .detail-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:7px; margin-top:12px; }
+    .detail-stats .mini { min-width:0; padding:10px; }
+    .detail-stats .mini .v { overflow-wrap:anywhere; }
+    @media (min-width:760px) {
+      .detail-cover { aspect-ratio:16 / 6.8; max-height:250px; }
+      .detail-title-row { align-items:center; }
+      .detail-stats { grid-template-columns:repeat(4,1fr); }
+    }
 
     .number-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; margin-top:12px; }
     .number {
@@ -359,7 +380,7 @@
       main { padding-top: 8px; }
       .grid-2 { grid-template-columns:1.15fr .85fr; align-items:start; }
       .hero-body { padding:30px; }
-      .home-feature-image { height: 300px; }
+      .home-feature-image { aspect-ratio: 16 / 8.5; min-height: 300px; }
       .steps { grid-template-columns:repeat(2,1fr); }
       .profile-grid { grid-template-columns:repeat(4,1fr); }
       .number-grid { grid-template-columns:repeat(10,1fr); }
@@ -575,19 +596,23 @@
       <div class="backline"><button class="backbtn" data-nav="raffles">← Volver a sorteos</button></div>
       <div class="detail-hero">
         <div class="detail-cover">
-          <img id="detailCoverImage" src="" alt="Imagen del sorteo" loading="eager">
+          <img id="detailCoverImage" src="" alt="Imagen del sorteo" loading="eager" data-action="open-image">
           <div class="detail-cover-fallback" id="detailCoverFallback"><div id="detailCoverName">SORTEO</div><small id="detailCoverPrize">Premio a definir</small></div>
         </div>
-        <div class="detail-card">
-          <div class="raffle-topline"><span class="badge success" id="detailStatus">Activo</span><span class="muted" id="detailCloseText">Cierre a definir</span></div>
-          <h1 id="detailName" style="font-size:30px;margin:12px 0 7px">Sorteo</h1>
-          <p class="lead" id="detailDescription">Descripción del sorteo.</p>
-          <div class="raffle-meta">
-            <div class="mini"><div class="k">Premio</div><div class="v" id="detailPrize">A definir</div></div>
-            <div class="mini"><div class="k">Precio por número</div><div class="v" id="detailPrice">A definir</div></div>
+        <div class="detail-card detail-info-card">
+          <div class="detail-title-row">
+            <div class="detail-title-copy">
+              <div class="raffle-topline"><span class="badge success" id="detailStatus">Activo</span><span class="muted" id="detailCloseText">Cierre a definir</span></div>
+              <h1 id="detailName">Sorteo</h1>
+            </div>
+            <div class="detail-prize"><span class="k">Premio</span><span class="v" id="detailPrize">A definir</span></div>
+          </div>
+          <p class="lead detail-description" id="detailDescription">Descripción del sorteo.</p>
+          <div class="detail-stats">
+            <div class="mini"><div class="k">Por número</div><div class="v" id="detailPrice">A definir</div></div>
             <div class="mini"><div class="k">Vendidos</div><div class="v" id="detailSold">0 / 100</div></div>
             <div class="mini"><div class="k">Resultado</div><div class="v">Últimos 2 dígitos</div></div>
-            <div class="mini"><div class="k">Cuenta regresiva</div><div class="v" id="detailCountdown">—</div></div>
+            <div class="mini"><div class="k">Cierra en</div><div class="v" id="detailCountdown">—</div></div>
           </div>
         </div>
       </div>
@@ -684,6 +709,7 @@
     </div>
   </div>
 
+  <div class="image-lightbox" id="imageLightbox" aria-hidden="true"><button type="button" data-action="close-image">×</button><img id="lightboxImage" src="" alt="Imagen ampliada"></div>
   <div class="toast" id="toast"></div>
 </div>
 
@@ -933,10 +959,14 @@
     const homeFallback = $('#homeRaffleImageFallback');
     if (active.imageUrl) {
       homeImage.src = active.imageUrl;
+      homeImage.dataset.image = active.imageUrl;
+      homeImage.dataset.action = 'open-image';
       homeImage.style.display = 'block';
       homeFallback.style.display = 'none';
     } else {
       homeImage.removeAttribute('src');
+      delete homeImage.dataset.image;
+      delete homeImage.dataset.action;
       homeImage.style.display = 'none';
       homeFallback.textContent = active.prefix || 'SORTEO';
       homeFallback.style.display = 'block';
@@ -971,7 +1001,7 @@
     const pct = total ? Math.round((sold / total)*100) : 0;
     const statusClass = r.status === 'active' ? 'success' : r.status === 'upcoming' ? 'info' : 'neutral';
     const statusLabel = r.status === 'active' ? 'Activo' : r.status === 'upcoming' ? 'Próximo' : 'Finalizado';
-    const cover = r.imageUrl ? `<img src="${escapeAttr(r.imageUrl)}" alt="" loading="lazy"><span>${escapeHtml(r.prefix || 'SORTEO')}</span>` : `<span>${escapeHtml(r.prefix || 'SORTEO')}</span>`;
+    const cover = r.imageUrl ? `<img src="${escapeAttr(r.imageUrl)}" alt="" loading="lazy" data-action="open-image" data-image="${escapeAttr(r.imageUrl)}"><span>${escapeHtml(r.prefix || 'SORTEO')}</span>` : `<span>${escapeHtml(r.prefix || 'SORTEO')}</span>`;
     wrap.innerHTML = `
       <div class="raffle-cover">${cover}</div>
       <div class="raffle-body">
@@ -1121,7 +1151,7 @@
     state.rewards.forEach(r => {
       const el = document.createElement('div');
       el.className = 'list-item';
-      el.innerHTML = `<div class="reward"><div class="reward-thumb">✦</div><div><div class="list-title">${escapeHtml(r.name)}</div><div class="list-sub">${escapeHtml(r.description)}</div><div class="reward-meta"><span class="badge info">${money(r.points)} pts</span><span class="badge neutral">${r.stock == null ? 'Stock configurable' : r.stock + ' disponibles'}</span></div></div></div><button class="btn btn-secondary small" data-reward="${escapeAttr(r.id)}" onclick="redeemReward('${escapeAttr(r.id)}')">Solicitar</button>`;
+      el.innerHTML = `<div class="reward"><div class="reward-thumb">${r.imageUrl ? `<img src="${escapeAttr(r.imageUrl)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:16px;cursor:zoom-in" data-action="open-image" data-image="${escapeAttr(r.imageUrl)}">` : '✦'}</div><div><div class="list-title">${escapeHtml(r.name)}</div><div class="list-sub">${escapeHtml(r.description)}</div><div class="reward-meta"><span class="badge info">${money(r.points)} pts</span><span class="badge neutral">${r.stock == null ? 'Stock configurable' : r.stock + ' disponibles'}</span></div></div></div><button class="btn btn-secondary small" data-reward="${escapeAttr(r.id)}" onclick="redeemReward('${escapeAttr(r.id)}')">Solicitar</button>`;
       list.appendChild(el);
     });
   }
@@ -1137,10 +1167,12 @@
     const detailFallback = $('#detailCoverFallback');
     if (raffle.imageUrl) {
       detailImage.src = raffle.imageUrl;
+      detailImage.dataset.image = raffle.imageUrl;
       detailImage.style.display = 'block';
       detailFallback.style.display = 'none';
     } else {
       detailImage.removeAttribute('src');
+      delete detailImage.dataset.image;
       detailImage.style.display = 'none';
       detailFallback.style.display = 'block';
     }
@@ -1270,6 +1302,11 @@
     const raffleId = state.selectedRaffleId;
     const numbers = state.selectedNumbers.map(Number);
     const paymentMethod = state.appConfig?.mercadopago_enabled === false ? 'transfer' : (state.paymentMethod === 'transfer' ? 'transfer' : 'mercadopago');
+    // Revalidamos disponibilidad justo antes de crear la compra. Esto evita usar una grilla vieja después de una compra anterior.
+    const { data: freshNumbers, error: freshError } = await sb.from('raffle_numbers').select('number,status,reservation_expires_at').eq('raffle_id', raffleId).in('number', numbers);
+    if (freshError) { toast('No se pudo verificar la disponibilidad. Intentá nuevamente.'); return; }
+    const unavailable = (freshNumbers || []).filter(x => x.status === 'sold' || (x.status === 'reserved' && x.reservation_expires_at && new Date(x.reservation_expires_at).getTime() > Date.now()));
+    if (unavailable.length) { toast('Uno o más números ya no están disponibles. Elegí otros.'); await renderNumberGrid(state.raf.find(r => r.id === raffleId)); state.selectedNumbers = state.selectedNumbers.filter(n => !unavailable.some(x => String(x.number).padStart(2,'0') === n)); updateSelectionBar(); return; }
     const total = getSelectionTotal();
     const button = $('[data-action="submit-checkout"]');
     if (button) { button.disabled = true; button.textContent = 'Reservando...'; }
@@ -1309,13 +1346,16 @@
       if (code.includes('NUMBERS_UNAVAILABLE')) toast('Uno o más números ya no están disponibles. Actualicé la grilla.');
       else if (code.includes('RAFFLE_NOT_AVAILABLE')) toast('El sorteo ya no está disponible.');
       else if (code.includes('AUTH_REQUIRED')) toast('La sesión de compra no está disponible. Intentá nuevamente.');
-      else toast('No se pudo crear la compra. Revisá los datos e intentá nuevamente.');
+      else toast('No se pudo crear la compra: ' + String(error?.message || 'error desconocido'));
       const raffle = state.raf.find(r => r.id === raffleId);
       if (raffle) await renderNumberGrid(raffle);
     } finally {
       if (button) { button.disabled = false; button.textContent = 'Continuar con la compra'; }
     }
   }
+
+  function openImage(url){ const src=url || $('#detailCoverImage')?.dataset.image; if(!src)return; $('#lightboxImage').src=src; $('#imageLightbox').classList.add('show'); $('#imageLightbox').setAttribute('aria-hidden','false'); }
+  function closeImage(){ $('#imageLightbox').classList.remove('show'); $('#imageLightbox').setAttribute('aria-hidden','true'); $('#lightboxImage').removeAttribute('src'); }
 
   function showState(eyebrow, title, text, html) {
     $('#stateEyebrow').textContent = eyebrow;
@@ -1437,6 +1477,8 @@
         case 'go-checkout': goCheckout(); break;
         case 'back-to-detail': navigate('raffle-detail'); break;
         case 'submit-checkout': submitCheckout(); break;
+        case 'open-image': openImage(actionEl.dataset.image); break;
+        case 'close-image': closeImage(); break;
         case 'copy-ref': copyReferral(); break;
       }
     }
